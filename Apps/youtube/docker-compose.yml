@@ -1,0 +1,51 @@
+name: youtube
+services:
+  youtube:
+    # Build context = the youtube-downloader app repository (see repo URL below).
+    # Replace with your own git URL.
+    build:
+      context: https://github.com/fchazal/youtube-downloader.git
+      dockerfile: Dockerfile
+    image: yt-dlp-api:latest
+    container_name: youtube
+    ports:
+      - target: 8000
+        published: "8000"
+        protocol: tcp
+    environment:
+      - DATA_DIR=/data
+      - PORT=8000
+      - YTDLP_UPDATE=1
+    volumes:
+      - ${PWD}/data:/data
+    restart: unless-stopped
+
+x-casaos:
+  id: com.fchazal.youtube
+  main: youtube
+  index: /
+  port_map: "8000"
+  scheme: http
+  icon: ./icon.png
+  title:
+    en_US: youtube
+  tagline:
+    en_US: yt-dlp download API
+  description:
+    en_US: |
+      Dockerized yt-dlp API. Fetch video properties, list available
+      formats/qualities, and download videos, audio and subtitles into a
+      subdirectory of $$DATA_DIR. Includes ffmpeg and self-updating yt-dlp.
+  author: fchazal
+  developer: fchazal
+  category: Media
+  architectures:
+    - amd64
+    - arm64
+  version: "1.0.0"
+  update_at: "2026-08-04"
+  website: https://github.com/yt-dlp/yt-dlp
+  repo: https://github.com/yt-dlp/yt-dlp
+  support: https://github.com/yt-dlp/yt-dlp/issues
+  release_notes:
+    en_US: First release. Info, formats and download endpoints.

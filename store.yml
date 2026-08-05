@@ -1,0 +1,9 @@
+name: Fchazal Store
+author: fchazal
+description: Personal apps - youtube (yt-dlp download API)
+icon: https://raw.githubusercontent.com/fchazal/casaos-store/main/Apps/youtube/icon.png
+category:
+  - Media
+supported_architectures:
+  - amd64
+  - arm64
