@@ -26,7 +26,7 @@ x-casaos:
   index: /
   port_map: "8000"
   scheme: http
-  icon: ./icon.png
+  icon: https://raw.githubusercontent.com/fchazal/casaos-store/main/Apps/youtube/icon.png
   title:
     en_US: youtube
   tagline:

@@ -25,7 +25,7 @@ x-casaos:
   index: /
   port_map: "4000"
   scheme: http
-  icon: ./icon.png
+  icon: https://raw.githubusercontent.com/fchazal/casaos-store/main/Apps/journal/icon.png
   title:
     en_US: journal
   tagline:
