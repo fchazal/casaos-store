@@ -1,0 +1,29 @@
+name: Publish store
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create store archive
+        run: |
+          rm -f store.zip
+          zip -r store.zip Apps category-list.json README.md
+
+      - name: Publish release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: store
+          name: Store
+          body: Dernier archive du store CasaOS.
+          files: store.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
