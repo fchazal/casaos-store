@@ -1,0 +1,50 @@
+name: journal
+services:
+  journal:
+    # Build context = the journaling-app repository.
+    build:
+      context: https://github.com/fchazal/journaling-app.git
+      dockerfile: Dockerfile
+    image: journaling-app:latest
+    container_name: journal
+    ports:
+      - target: 4000
+        published: "4000"
+        protocol: tcp
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - DATA_DIR=/data
+    volumes:
+      - ${PWD}/data:/data
+    restart: unless-stopped
+
+x-casaos:
+  id: com.fchazal.journal
+  main: journal
+  index: /
+  port_map: "4000"
+  scheme: http
+  icon: ./icon.png
+  title:
+    en_US: journal
+  tagline:
+    en_US: Journal personnel — humeur, énergie, notes
+  description:
+    en_US: |
+      Carnet : journal personnel auto-hébergé. Humeur & énergie, note du jour,
+      blocs par type de template, suivi du poids. Données stockées en Markdown
+      local (dossier /data, compatible Obsidian). Fonctionne hors-ligne.
+  author: fchazal
+  developer: fchazal
+  category: Productivity
+  architectures:
+    - amd64
+    - arm64
+  version: "1.0.0"
+  update_at: "2026-08-05"
+  website: https://github.com/fchazal/journaling-app
+  repo: https://github.com/fchazal/journaling-app
+  support: https://github.com/fchazal/journaling-app/issues
+  release_notes:
+    en_US: First release. Journal quotidien, humeur, énergie, poids et blocs par type.

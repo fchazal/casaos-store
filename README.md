@@ -16,6 +16,13 @@ The container image is **built on the CasaOS server** from the
 URL in `Apps/youtube/docker-compose.yml`. Alternatively, publish the image and
 replace the `build` block with `image: <registry>/yt-dlp-api:latest`.
 
+### journal — journal personnel
+
+Self-hosted personal journaling PWA: mood & energy, daily note, per-type blocks,
+weight tracking. Markdown storage (Obsidian-compatible), works offline.
+Built from the [journaling-app](https://github.com/fchazal/journaling-app)
+repository on the CasaOS server.
+
 ## Install on CasaOS
 
 1. Push this repo to your personal git host (e.g. GitHub).
@@ -32,9 +39,13 @@ Downloads land in `/DATA/AppData/youtube/data/<subdir>/...`.
 .
 ├── store.yml                     # store identity
 └── Apps/
-    └── youtube/
+    ├── youtube/
+    │   ├── docker-compose.yml    # compose + x-casaos store metadata
+    │   └── icon.png              # app icon
+    └── journal/
         ├── docker-compose.yml    # compose + x-casaos store metadata
         └── icon.png              # app icon
 ```
 
-The application source lives in the separate **youtube-downloader** repository.
+Applications live in their own repositories (`youtube-downloader`,
+`journaling-app`).
