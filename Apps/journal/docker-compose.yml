@@ -37,7 +37,7 @@ x-casaos:
       local (dossier /data, compatible Obsidian). Fonctionne hors-ligne.
   author: fchazal
   developer: fchazal
-  category: Productivity
+  category: Personal
   architectures:
     - amd64
     - arm64

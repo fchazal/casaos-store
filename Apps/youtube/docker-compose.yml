@@ -38,7 +38,7 @@ x-casaos:
       subdirectory of $$DATA_DIR. Includes ffmpeg and self-updating yt-dlp.
   author: fchazal
   developer: fchazal
-  category: Media
+  category: Personal
   architectures:
     - amd64
     - arm64
