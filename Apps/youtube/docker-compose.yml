@@ -1,11 +1,6 @@
 name: youtube
 services:
   youtube:
-    # Build context = the youtube-downloader app repository (see repo URL below).
-    # Replace with your own git URL.
-    build:
-      context: https://github.com/fchazal/youtube-downloader.git
-      dockerfile: Dockerfile
     image: yt-dlp-api:latest
     container_name: youtube
     ports:

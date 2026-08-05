@@ -1,10 +1,6 @@
 name: journal
 services:
   journal:
-    # Build context = the journaling-app repository.
-    build:
-      context: https://github.com/fchazal/journaling-app.git
-      dockerfile: Dockerfile
     image: journaling-app:latest
     container_name: journal
     ports:

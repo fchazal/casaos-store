@@ -34,9 +34,30 @@ weight tracking. Markdown storage (Obsidian-compatible), works offline.
 Built from the [journaling-app](https://github.com/fchazal/journaling-app)
 repository on the CasaOS server.
 
-Both apps `build` their image from the app repo's git URL. If you host those
-repos elsewhere, update the `build.context` URLs. Alternatively, publish the
-images and replace `build` with `image: <registry>/...:latest`.
+CasaOS does **not** build images from a compose `build:` section — it only pulls
+(or reuses) pre-built images by name. The compose files here reference the
+images as they exist in the CasaOS server's Docker daemon
+(`yt-dlp-api:latest`, `journaling-app:latest`).
+
+## Build & load images on CasaOS (x86_64)
+
+CasaOS installs the app from the `image:` name. If the image is not already on
+the server, CasaOS tries to pull it from a registry and fails with
+`no such image`. Since these apps are built from local repos, build them for
+**amd64** and load them into the server's Docker daemon:
+
+```bash
+# local build (x86_64), from this repo directory:
+./build-and-load.sh user@casaos-host
+
+# or manually, per app:
+docker buildx build --platform linux/amd64 -t yt-dlp-api:latest    --load ../youtube-downloader
+docker buildx build --platform linux/amd64 -t journaling-app:latest --load ../journaling-app
+docker save yt-dlp-api:latest journaling-app:latest | gzip | ssh user@casaos-host 'gunzip | docker load'
+```
+
+Then re-install the app in CasaOS — it will find the local image and skip the
+pull. Re-run after any change to an app repo.
 
 ## Install on CasaOS
 
