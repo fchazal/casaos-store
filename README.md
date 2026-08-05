@@ -40,10 +40,15 @@ images and replace `build` with `image: <registry>/...:latest`.
 
 ## Install on CasaOS
 
+CasaOS fetches the store with `go-getter`, which only handles **zip archives**
+(or `git::`-prefixed / `github.com/…` shorthand URLs). A plain
+`https://github.com/…/….git` URL is downloaded as a file and the store is
+rejected — use the archive URL below.
+
 1. Push this repo to a **public** git host (it is fetched by CasaOS).
 2. In CasaOS open **App Store** → custom app store (the "+" / settings icon).
-3. Add the repo URL:
-   - git URL: `https://github.com/fchazal/casaos-store.git`
-   - or archive: `https://github.com/fchazal/casaos-store/archive/refs/heads/main.zip`
+3. Add the store URL (use the archive URL):
+   - **archive (recommended):** `https://github.com/fchazal/casaos-store/archive/refs/heads/main.zip`
+   - or git-prefixed: `git::https://github.com/fchazal/casaos-store.git`
 4. Install the **youtube** / **journal** apps (first install builds the image,
    which takes a few minutes; network access to GitHub is required).
