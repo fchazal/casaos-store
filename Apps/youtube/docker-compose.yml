@@ -17,7 +17,7 @@ services:
       - PORT=8000
       - YTDLP_UPDATE=1
     volumes:
-      - ${PWD}/data:/data
+      - ./data:/data
     restart: unless-stopped
 
 x-casaos:

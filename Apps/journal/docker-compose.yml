@@ -16,7 +16,7 @@ services:
       - PORT=4000
       - DATA_DIR=/data
     volumes:
-      - ${PWD}/data:/data
+      - ./data:/data
     restart: unless-stopped
 
 x-casaos:
