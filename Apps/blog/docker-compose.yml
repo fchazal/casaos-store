@@ -1,0 +1,50 @@
+name: blog
+services:
+  blog:
+    image: fchazal-net:latest
+    container_name: fchazal-net
+    ports:
+      - target: 3000
+        published: "3000"
+        protocol: tcp
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - SITE_URL=https://blog.fchazal.net
+      - DATABASE_PATH=/app/data/interactions.sqlite
+      - WEBMENTION_IO_TOKEN=
+      - PUBLICATION_WEBHOOK_URL=
+    volumes:
+      - ./content:/app/content:ro
+      - ./data:/app/data
+    restart: unless-stopped
+
+x-casaos:
+  id: com.fchazal.blog
+  main: blog
+  index: /
+  port_map: "3000"
+  scheme: http
+  icon: https://raw.githubusercontent.com/fchazal/casaos-store/main/Apps/blog/icon.png
+  title:
+    en_US: blog
+  tagline:
+    en_US: Carnet littéraire — textes, essais, dessins, code
+  description:
+    en_US: |
+      Suppléments d’âme & Bouts d’humanité : carnet littéraire auto-hébergé
+      (textes, essais, dessins, œuvres p5.js). Contenu Markdown (Obsidian),
+      flux RSS/JSON, Webmentions, likes. Rendu serveur (SSR).
+  author: fchazal
+  developer: fchazal
+  category: Personal
+  architectures:
+    - amd64
+    - arm64
+  version: "1.0.0"
+  update_at: "2026-10-05"
+  website: https://blog.fchazal.net
+  repo: https://github.com/fchazal/casaos-store
+  support: https://github.com/fchazal/casaos-store/issues
+  release_notes:
+    en_US: First release. Textes, essais, dessins, code, recherche, RSS et likes.

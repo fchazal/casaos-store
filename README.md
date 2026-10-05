@@ -9,7 +9,10 @@ CasaOS custom app store. Structure expected by CasaOS (AppManagement):
     ├── youtube/
     │   ├── docker-compose.yml    # compose + x-casaos store metadata
     │   └── icon.png              # app icon
-    └── journal/
+    ├── journal/
+    │   ├── docker-compose.yml    # compose + x-casaos store metadata
+    │   └── icon.png              # app icon
+    └── blog/
         ├── docker-compose.yml    # compose + x-casaos store metadata
         └── icon.png              # app icon
 ```
@@ -34,30 +37,51 @@ weight tracking. Markdown storage (Obsidian-compatible), works offline.
 Built from the [journaling-app](https://github.com/fchazal/journaling-app)
 repository on the CasaOS server.
 
+### blog — carnet littéraire
+
+Self-hosted literary blog / carnet (Suppléments d’âme & Bouts d’humanité):
+texts, essays, drawings and p5.js works. Markdown content (Obsidian-compatible),
+RSS/JSON feeds, Webmentions, likes, server-side rendering.
+Built from the [fchazal.net](https://github.com/fchazal/casaos-store)
+project (Vike + React + Fastify) on the CasaOS server.
+
 CasaOS does **not** build images from a compose `build:` section — it only pulls
 (or reuses) pre-built images by name. The compose files here reference the
 images as they exist in the CasaOS server's Docker daemon
-(`yt-dlp-api:latest`, `journaling-app:latest`).
+(`yt-dlp-api:latest`, `journaling-app:latest`, `fchazal-net:latest`).
 
-## Build & load images on CasaOS (x86_64)
+## Build & deploy images on CasaOS (remote build)
 
 CasaOS installs the app from the `image:` name. If the image is not already on
 the server, CasaOS tries to pull it from a registry and fails with
-`no such image`. Since these apps are built from local repos, build them for
-**amd64** and load them into the server's Docker daemon:
+`no such image`. Since these apps are built from source repos, the build
+script syncs source code to the remote server and builds there — no local
+Docker required.
 
 ```bash
-# local build (x86_64), from this repo directory:
+# sync sources and build on the remote server:
 ./build-and-load.sh user@casaos-host
 
-# or manually, per app:
-docker buildx build --platform linux/amd64 -t yt-dlp-api:latest    --load ../youtube-downloader
-docker buildx build --platform linux/amd64 -t journaling-app:latest --load ../journaling-app
-docker save yt-dlp-api:latest journaling-app:latest | gzip | ssh user@casaos-host 'gunzip | docker load'
+# options:
+#   -p <port>          SSH port (default: 22)
+#   -u                 use sudo for docker on the server
+#   -r <remote-path>   remote build directory (default: /tmp/casaos-build)
+#   -a <app>           build only this app (youtube, journal, blog); repeatable
+
+# example with custom port and sudo:
+./build-and-load.sh -p 2222 -u user@casaos-host
+
+# example with custom remote path:
+./build-and-load.sh -r /opt/builds user@casaos-host
+
+# build a single app:
+./build-and-load.sh -a blog user@casaos-host
 ```
 
-Then re-install the app in CasaOS — it will find the local image and skip the
-pull. Re-run after any change to an app repo.
+The script uses `rsync` to copy the source repos (`../youtube-downloader`,
+`../journaling-app`, and `../../PERSONAL/fchazal.net`) to the remote server,
+then runs `docker buildx build --platform linux/amd64` there. Re-run after any
+change to an app repo.
 
 ## Install on CasaOS
 
@@ -71,5 +95,7 @@ rejected — use the archive URL below.
 3. Add the store URL (use the archive URL):
    - **archive (recommended):** `https://github.com/fchazal/casaos-store/archive/refs/heads/main.zip`
    - or git-prefixed: `git::https://github.com/fchazal/casaos-store.git`
-4. Install the **youtube** / **journal** apps (first install builds the image,
+4. Install the **youtube** / **journal** / **blog** apps (first install builds the image,
    which takes a few minutes; network access to GitHub is required).
+   For **blog**, also set the `./content` volume (your synced Markdown/Obsidian
+   content) and the `SITE_URL` environment variable.
